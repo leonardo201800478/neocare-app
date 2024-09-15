@@ -1,6 +1,4 @@
-// https://github.com/powersync-ja/powersync-js/blob/main/demos/react-native-supabase-group-chat/src/lib/uuid.ts
-import * as Crypto from 'expo-crypto';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
-export function uuid() {
-  return Crypto.randomUUID();
-}
+const myUUID = uuidv4();

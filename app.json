@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "localFirstTodos",
-    "slug": "localFirstTodos",
+    "name": "neocare",
+    "slug": "neocare",
     "version": "1.0.0",
-    "scheme": "localFirstTodos",
+    "scheme": "neocare",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -29,14 +29,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.supersimon.localFirstTodos"
+      "bundleIdentifier": "com.strife.neocare"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.supersimon.localFirstTodos"
+      "package": "com.strife.neocare"
     }
   }
 }
