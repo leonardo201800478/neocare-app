@@ -1,0 +1,45 @@
+/project-root
+│
+├── /app
+│   ├── /attendences
+│   │   ├── _layout.tsx             # Layout para o módulo de atendimentos
+│   │   ├── index.tsx               # Página para listar os atendimentos
+│   │
+│   ├── /auth
+│   │   ├── _layout.tsx             # Layout para autenticação
+│   │   ├── index.tsx               # Página de login
+│   │
+│   ├── /doctors
+│   │   ├── _layout.tsx             # Layout para a página inicial (dashboard)
+│   │   ├── index.tsx               # Página de gerenciamento de médicos
+│   │
+│   ├── /home
+│   │   ├── _layout.tsx             # Layout para a página inicial (dashboard)
+│   │   ├── index.tsx               # Página inicial (dashboard)
+│   │
+│   ├── /patients
+│   │   ├── _layout.tsx             # Layout para o módulo de pacientes
+│   │   ├── index.tsx               # Página de gerenciamento de pacientes
+│
+├── /assets                         # Arquivos de mídia, ícones, fontes, etc.
+│
+├── /components
+│   ├── SwipeableRow.tsx            # Componente para Swipeable Row (para deletar itens)
+│
+├── /powersync
+│   ├── AppSchema.ts                # Esquema do banco de dados do PowerSync
+│   ├── PowerSync.tsx               # Arquivo de configuração do PowerSync
+│   ├── PowerSyncProvider.tsx       # Provedor de contexto para PowerSync
+│   ├── SupabaseConnector.ts        # Conector entre Supabase e PowerSync
+│
+├── /utils
+│   ├── uuid.ts                     # Função utilitária para gerar UUIDs
+│
+├── .env                            # Arquivo de variáveis de ambiente
+├── .gitignore                      # Arquivo para ignorar arquivos no Git
+├── app.json                        # Configurações do Expo
+├── babel.config.js                 # Configurações do Babel
+├── expo-env.d.ts                   # Declaração de tipos do Expo
+├── metro.config.js                 # Configurações do Metro bundler
+├── package.json                    # Configurações do npm
+└── tsconfig.json                   # Configurações do TypeScript

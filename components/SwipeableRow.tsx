@@ -1,18 +1,18 @@
+// component/SwipeableRow.tsx
 import React, { Component, PropsWithChildren } from 'react';
 import { Animated, StyleSheet, Text, View, I18nManager } from 'react-native';
-
 import { RectButton } from 'react-native-gesture-handler';
-
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { Todo } from '~/models/todo';
+
+import { Doctor, Patient } from '~/powersync/AppSchema';  // Importa os tipos Doctor e Patient
 
 interface Props {
-  todo: Todo;
+  item: Doctor | Patient;  // O item pode ser um médico (Doctor) ou paciente (Patient)
   onToggle: () => void;
   onDelete: () => void;
 }
 
-export default class AppleStyleSwipeableRow extends Component<PropsWithChildren<Props>> {
+export default class SwipeableRow extends Component<PropsWithChildren<Props>> {
   private renderRightAction = (
     text: string,
     color: string,
@@ -29,8 +29,6 @@ export default class AppleStyleSwipeableRow extends Component<PropsWithChildren<
       } else if (text === 'Delete') {
         this.props.onDelete();
       }
-      console.log(this.props);
-
       this.close();
     };
 
@@ -52,10 +50,6 @@ export default class AppleStyleSwipeableRow extends Component<PropsWithChildren<
         width: 160,
         flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
       }}>
-      {this.props.todo.is_complete === 0 &&
-        this.renderRightAction('Done', '#00d890', 160, progress)}
-      {this.props.todo.is_complete === 1 &&
-        this.renderRightAction('Undone', '#ffc44e', 160, progress)}
       {this.renderRightAction('Delete', '#ff76e8', 160, progress)}
     </View>
   );
@@ -65,6 +59,7 @@ export default class AppleStyleSwipeableRow extends Component<PropsWithChildren<
   private updateRef = (ref: Swipeable) => {
     this.swipeableRow = ref;
   };
+
   private close = () => {
     this.swipeableRow?.close();
   };

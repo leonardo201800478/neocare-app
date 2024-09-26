@@ -1,11 +1,12 @@
 import '@azure/core-asynciterator-polyfill';
 import 'react-native-polyfill-globals/auto';
 import { Kysely, wrapPowerSyncWithKysely } from '@powersync/kysely-driver';
-import { createContext, useContext } from 'react';
 import {
   AbstractPowerSyncDatabase,
   RNQSPowerSyncDatabaseOpenFactory,
 } from '@powersync/react-native';
+import { createContext, useContext } from 'react';
+
 import { AppSchema, Database } from './AppSchema';
 import { SupabaseConnector } from '../powersync/SupabaseConnector';
 

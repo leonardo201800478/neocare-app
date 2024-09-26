@@ -1,96 +1,29 @@
-import React, { useState } from 'react';
-import {
-  Alert,
-  View,
-  Button,
-  TextInput,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { useSystem } from '~/powersync/PowerSync';
-
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { supabaseConnector } = useSystem();
-
-  // Sign in with email and password
-  const onSignInPress = async () => {
-    setLoading(true);
-    try {
-      // Use the PowerSync specific login method
-      await supabaseConnector.login(email, password);
-    } catch (error: any) {
-      Alert.alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Create a new user
-  const onSignUpPress = async () => {
-    setLoading(true);
-
-    const {
-      data: { session },
-      error,
-    } = await supabaseConnector.client.auth.signUp({
-      email: email,
-      password: password,
-    });
-
-    if (error) {
-      Alert.alert(error.message);
-    } else if (!session) {
-      Alert.alert('Please check your inbox for email verification!');
-    }
-
-    setLoading(false);
-  };
+const HomePage = () => {
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
-      {loading && (
-        <View
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1,
-            elevation: 1,
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            gap: 10,
-          }}>
-          <ActivityIndicator size="large" color="#fff" />
-          <Text style={{ color: '#fff', fontSize: 20 }}>Loading...</Text>
-        </View>
-      )}
+      <Text style={styles.header}>Bem-vindo ao Sistema de Gerenciamento</Text>
 
-      <Text style={styles.header}>Power Todos</Text>
-
-      <TextInput
-        autoCapitalize="none"
-        placeholder="john@doe.com"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.inputField}
-      />
-      <TextInput
-        placeholder="password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.inputField}
-      />
-
-      <TouchableOpacity onPress={onSignInPress} style={styles.button}>
-        <Text style={{ color: '#fff' }}>Sign in</Text>
+      <TouchableOpacity style={styles.button} onPress={() => router.push(`/doctors`)}>
+        <Ionicons name="person-outline" size={24} color="#fff" />
+        <Text style={styles.buttonText}>Gerenciar Médicos</Text>
       </TouchableOpacity>
-      <Button onPress={onSignUpPress} title="Create Account" color={'#fff'} />
+
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/patients')}>
+        <Ionicons name="people-outline" size={24} color="#fff" />
+        <Text style={styles.buttonText}>Gerenciar Pacientes</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/attendences')}>
+        <Ionicons name="document-text-outline" size={24} color="#fff" />
+        <Text style={styles.buttonText}>Gerenciar Atendimentos</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -98,33 +31,33 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 200,
-    padding: 20,
-    backgroundColor: '#151515',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#f4f4f4',
   },
   header: {
-    fontSize: 30,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 32,
     textAlign: 'center',
-    margin: 50,
-    color: '#fff',
-  },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#A700FF',
-    borderRadius: 4,
-    padding: 10,
-    color: '#fff',
-    backgroundColor: '#363636',
   },
   button: {
-    marginVertical: 15,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#A700FF',
-    padding: 12,
-    borderRadius: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginBottom: 16,
+    width: '80%',
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',
+    marginLeft: 8,
   },
 });
 
-export default Login;
+export default HomePage;
