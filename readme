@@ -43,3 +43,25 @@
 ├── metro.config.js                 # Configurações do Metro bundler
 ├── package.json                    # Configurações do npm
 └── tsconfig.json                   # Configurações do TypeScript
+
+
+
+Tabelas:
+
+doctors: Armazena as informações dos médicos.
+patients: Armazena os dados dos pacientes.
+attendances: Armazena os prontuários de atendimento.
+Funções:
+
+Função que cria automaticamente um registro na tabela doctors ao criar um usuário.
+Função que cria um prontuário em branco na tabela attendances ao criar um paciente.
+Triggers:
+
+Trigger para criar um médico na tabela doctors quando um novo usuário é criado.
+Trigger para criar automaticamente um prontuário em branco ao cadastrar um paciente.
+Row-Level Security (RLS):
+
+Políticas de segurança para garantir que cada médico só possa ver os pacientes que ele criou ou os prontuários que ele atualizou.
+PowerSync SyncRules:
+
+Definir as regras de sincronização para o PowerSync para as tabelas envolvidas.

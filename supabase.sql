@@ -1,43 +1,74 @@
-CREATE TABLE IF NOT EXISTS "todos" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"task" text,
-	"is_complete" integer DEFAULT 0,
-	"modified_at" timestamp DEFAULT now(),
-	"user_id" uuid NOT NULL
+-- Tabela Doctors (Médicos)
+CREATE TABLE public.doctors (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  name text NOT NULL,
+  owner_id uuid NOT NULL REFERENCES auth.users (id) ON DELETE CASCADE,
+  UNIQUE (owner_id)
 );
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"email" text
+
+-- Tabela Patients (Pacientes)
+CREATE TABLE public.patients (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  nome_patients text NOT NULL,
+  cpf_patients text UNIQUE NOT NULL,
+  data_nasc_patients date,
+  sexo_patients text,
+  email_patients text,
+  fone_patients text,
+  cep_patients text,
+  uf_patients text,
+  cidade_patients text,
+  endereco_patients text,
+  numero_endereco_patients text,
+  created_by uuid NULL REFERENCES auth.users (id) ON DELETE SET NULL,
+  doctor_id uuid NOT NULL REFERENCES public.doctors (id) ON DELETE CASCADE,
+  updated_at timestamp with time zone DEFAULT now(),
+  UNIQUE (cpf_patients)
 );
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "todos" ADD CONSTRAINT "todos_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
 
-alter table todos enable row level security;
-create policy "Individuals can create todos." on todos for
-    insert with check (auth.uid() = user_id);
-create policy "Individuals can view their own todos. " on todos for
-    select using ((select auth.uid()) = user_id);
-create policy "Individuals can update their own todos." on todos for
-    update using ((select auth.uid()) = user_id);
-create policy "Individuals can delete their own todos." on todos for
-    delete using ((select auth.uid()) = user_id);
+-- Tabela Attendances (Prontuários)
+CREATE TABLE public.attendances (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  tax_mae text,
+  peso_mae text,
+  estatura_mae text,
+  pa_mae text,
+  tipo_sang_mae text,
+  tax text,
+  apgar_1 text,
+  apgar_5 text,
+  peso text,
+  comprimento text,
+  pc text,
+  gesta text,
+  para text,
+  cesareas text,
+  abortos text,
+  abot_espon text,
+  vacinas_mae text,
+  nasc_vivos text,
+  mort_neo text,
+  filhos text,
+  intern text,
+  cirg text,
+  quant_cirg text,
+  consul_pre text,
+  quant_consul_pre text,
+  trat_mae text,
+  descr_mae text,
+  patient_id uuid NOT NULL REFERENCES public.patients (id) ON DELETE CASCADE,
+  doctor_id uuid NOT NULL REFERENCES public.doctors (id) ON DELETE CASCADE,
+  doctor_name text NOT NULL,
+  created_by uuid NOT NULL REFERENCES auth.users (id) ON DELETE SET NULL
+);
 
-create function public.handle_new_user()
-returns trigger as $$
-begin
-  insert into public.users (id, email)
-  values (new.id, new.email);
-  return new;
-end;
-$$ language plpgsql security definer;
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute procedure public.handle_new_user();
+-- Publicar tabelas para sincronização no powersync;
 
-drop publication if exists powersync;
-create publication powersync for table public.todos;
+CREATE PUBLICATION powersync FOR TABLE
+  public.doctors,
+  public.patients,
+  public.attendances;
